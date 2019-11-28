@@ -7,6 +7,8 @@
 #include <algorithm>
 #include <vector>
 #include <numeric>
+#include <stdio.h>
+#include <cstdlib>
 using namespace std ;
 
 #define pi 3.1415
@@ -17,15 +19,15 @@ typedef tuple<vector<double>,double> VD ;
 
 double Dist2D (double x1 , double y1 , double x2 , double y2 ) ;
 vector<double> Dist_PointToVec2D ( double x1, double y1, vector<double> X2, vector<double> Y2 ) ;
-vector<vector <double>> Dist_VecToVec2D ( vector<double> , vector<double> , vector<double>, vector<double>  ) ;
-vector<int> Indices_MinMatrix (vector<vector<double >>) ;
-vector<int> Indices_MaxMatrix (vector<vector<double>>  ) ;
+vector<vector <double> > Dist_VecToVec2D ( vector<double> , vector<double> , vector<double>, vector<double>  ) ;
+vector<int> Indices_MinMatrix (vector<vector<double > >) ;
+vector<int> Indices_MaxMatrix (vector<vector<double> >  ) ;
 vector<double> Dist_pointToVec1D ( double x1, vector<double> X2) ;
 
 double DotProduct (double x1 , double y1 , double x2 , double y2) ;
 double AngleOfTwoVectors (double x1 , double y1 , double x2 , double y2) ;
 double MagnitudeVec (double x , double y) ;
-double sum_over_vec(const vector<vector<double>>& v, int a ) ;
+double sum_over_vec(const vector<vector<double> >& v, int a ) ;
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------
 //---------------------------------------------------------------------------------------------

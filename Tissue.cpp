@@ -1,5 +1,4 @@
 
-#include <stdio.h>
 #include "Tissue.hpp"
 
 void Tissue::Cal_AllCellCenters()
@@ -376,10 +375,10 @@ void Tissue::Cal_Intersect()
                         vector<double> intfX_BC = cells.at(cellID_C).neighbors.at(nghbrIDB_C).intfX ;
                         vector<double> intfY_BC = cells.at(cellID_C).neighbors.at(nghbrIDB_C).intfY ;
                         
-                        vector<vector<double>> AB_AC = Dist_VecToVec2D(intfX_AB, intfY_AB, intfX_AC, intfY_AC) ;
+                        vector<vector<double> > AB_AC = Dist_VecToVec2D(intfX_AB, intfY_AB, intfX_AC, intfY_AC) ;
                         indices = Indices_MinMatrix(AB_AC) ;
                         
-                        vector<vector<double>> tmp ;
+                        vector<vector<double> > tmp ;
                         tmp.push_back( Dist_PointToVec2D(intfX_AB.at(indices.at(0)), intfY_AB.at(indices.at(0)), intfX_BC, intfY_BC) );
                         indices.push_back(Indices_MinMatrix(tmp).at(1)) ;
                         
@@ -390,7 +389,7 @@ void Tissue::Cal_Intersect()
                         vector<double> tmpx {intfX_AB.at(indices.at(0)),intfX_AC.at(indices.at(1)),intfX_BC.at(indices.at(2))} ;
                         vector<double> tmpy {intfY_AB.at(indices.at(0)),intfY_AC.at(indices.at(1)),intfY_BC.at(indices.at(2))} ;
                         
-                        vector<vector<double>> tmpDistVecToVec = Dist_VecToVec2D(tmpx, tmpy, tmpx, tmpy) ;
+                        vector<vector<double> > tmpDistVecToVec = Dist_VecToVec2D(tmpx, tmpy, tmpx, tmpy) ;
                         vector<double> tmpDist = *max_element(tmpDistVecToVec.begin(), tmpDistVecToVec.end()) ;
                         double maxDist = *max_element(tmpDist.begin(), tmpDist.end()) ;
                         
@@ -454,7 +453,7 @@ void Tissue::Find_boundaries()
                 cells.at(cellID_nghbr).boundary = true ;
                 if (cells.at(i).neighbors.at(j).intersectX.size() == 0 )
                 {
-                  vector<vector<double>> distTmp =  Dist_VecToVec2D(cells.at(i).neighbors.at(j).intfX,cells.at(i).neighbors.at(j).intfY,
+                  vector<vector<double> > distTmp =  Dist_VecToVec2D(cells.at(i).neighbors.at(j).intfX,cells.at(i).neighbors.at(j).intfY,
                                                                     cells.at(i).neighbors.at(j).intfX, cells.at(i).neighbors.at(j).intfY ) ;
                     
                    vector<int> indecies =  Indices_MaxMatrix(distTmp) ;
@@ -973,7 +972,7 @@ void Tissue::Refine_CurvedInterface ()
                 }
                 else
                 {
-                    vector<vector<double>> pairwiseDist =  Dist_VecToVec2D(intfX , intfY, intfX , intfY ) ;
+                    vector<vector<double> > pairwiseDist =  Dist_VecToVec2D(intfX , intfY, intfX , intfY ) ;
                     vector<int> indecies =  Indices_MaxMatrix(pairwiseDist) ;
                     point.first = intfX.at( indecies.at(0) ) ;
                     point.second = intfY.at(indecies.at(0) ) ;

@@ -1,5 +1,3 @@
-#include <iostream>
-#include <stdio.h>
 #include "Mesh.hpp"
 using namespace std ;
 #define thres_lateral 0.5 // 2.4 for plant cells and 0.5 for wing disc
@@ -30,7 +28,7 @@ class Neighbor
 public:
     int CellID_Neighbor ;       // stores cell ID number of the neighboring cell
     int NeighborID_Cell ;       // stores the neighbor ID number that points to our primary cell ID in the neighboring cell struct
-    vector<vector<double >> nodeDistoNghbr ;
+    vector<vector<double > > nodeDistoNghbr ;
     vector<double> minDistNode ;
     vector< int > indexMinDistNode ;
     vector<int> indexCellNode ;
@@ -77,7 +75,7 @@ class Cell
     vector <double> centroid ;
     vector<double> cntrToCntr ;
     vector <int > nghbrCandidate ;
-    vector<vector<vector<double>>> nodeDistoNghbrsCandidate ;
+    vector<vector<vector<double> > > nodeDistoNghbrsCandidate ;
     
     void Cal_Centroid() ;
     vector <vector <double> > Cal_NodeToNodeDist (vector<double> , vector<double>) ;

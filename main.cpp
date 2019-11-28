@@ -1,11 +1,4 @@
-#include <iostream>
-#include <fstream>
-#include <math.h>
-#include <cstdlib>
-#include <fstream>
-#include <algorithm>
-#include <vector>
-#include <numeric>
+
 #include "Tissue.hpp"
 
 void ParaView (const Tissue &tissue) ;

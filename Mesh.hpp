@@ -36,7 +36,7 @@ public:
     vector<double> degradations ;
     vector<double> productions ;
     vector<double> rates ;          // <r_c, r_im, r_ex, 0 , k_on , k_on, k_off> //k_on sqrt for both or 1 for one of them
-    vector<vector<double>> Flux ;
+    vector<vector<double> > Flux ;
     
     
     

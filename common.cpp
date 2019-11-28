@@ -1,6 +1,4 @@
 
-
-#include <stdio.h>
 #include "common.hpp"
 
 
@@ -22,9 +20,9 @@ vector<double> Dist_PointToVec2D (double x1, double y1, vector<double> X2, vecto
 }
 
 //---------------------------------------------------------------------------------------------
-vector<vector <double>> Dist_VecToVec2D ( vector<double> X1 , vector<double> Y1 , vector<double> X2, vector<double> Y2 )
+vector<vector <double> > Dist_VecToVec2D ( vector<double> X1 , vector<double> Y1 , vector<double> X2, vector<double> Y2 )
 {
-    vector<vector<double>> vec_vecDist ;
+    vector<vector<double> > vec_vecDist ;
     for (int i=0 ; i < X1.size(); i ++)
     {
         vec_vecDist.push_back(Dist_PointToVec2D( X1.at(i) , Y1.at(i) ,X2 , Y2 ) ) ;
@@ -33,7 +31,7 @@ vector<vector <double>> Dist_VecToVec2D ( vector<double> X1 , vector<double> Y1 
     return vec_vecDist ;
 }
 //---------------------------------------------------------------------------------------------
-vector<int> Indices_MinMatrix (vector<vector<double>> A )
+vector<int> Indices_MinMatrix (vector<vector<double> > A )
 {
     vector<int> indexRow ;
     vector<double> minRow ;
@@ -53,7 +51,7 @@ vector<int> Indices_MinMatrix (vector<vector<double>> A )
     return result ;
 }
 //---------------------------------------------------------------------------------------------
-vector<int> Indices_MaxMatrix (vector<vector<double>> A )
+vector<int> Indices_MaxMatrix (vector<vector<double> > A )
 {
     vector<int> indexRow ;
     vector<double> maxRow ;
@@ -99,7 +97,7 @@ double AngleOfTwoVectors (double x1 , double y1 , double x2 , double y2)
     return acos(Cos) ;
 }
 
-double sum_over_vec(const vector<vector<double>>& v, int a ) 
+double sum_over_vec(const vector<vector<double> >& v, int a ) 
 {
     return accumulate(v.begin(), v.end(), 0.0 ,
                       [&](double sum, vector<double> curr) { return sum + curr.at(a) ; });

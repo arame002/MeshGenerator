@@ -11,9 +11,9 @@ Cell::Cell ()
 };
 //---------------------------------------------------------------------------------------------
 
-vector <vector<double>> Cell::Cal_NodeToNodeDist(vector <double> nodesXNeighbor, vector<double> nodesYNeighbor)
+vector <vector<double> > Cell::Cal_NodeToNodeDist(vector <double> nodesXNeighbor, vector<double> nodesYNeighbor)
 {
-    vector<vector<double>> distNodeToNeighborNodes  ;
+    vector<vector<double> > distNodeToNeighborNodes  ;
     for (int k=0; k < nodesX.size() ; k++)
     {
         vector <double> distNodeToNode ;
@@ -239,7 +239,7 @@ void Cell::Add_BoundaryVertice3 ()
             
         }
         double preferedAngle = pi / 3 ;
-        vector<vector<double>> PairwiseDist= Dist_VecToVec2D(noNeighboringNodesX, noNeighboringNodesY, noNeighboringNodesX, noNeighboringNodesY) ;
+        vector<vector<double> > PairwiseDist= Dist_VecToVec2D(noNeighboringNodesX, noNeighboringNodesY, noNeighboringNodesX, noNeighboringNodesY) ;
         vector<int > indices = Indices_MaxMatrix(PairwiseDist) ;
         pair<double , double > point ;  //(x,y)
         point.first = noNeighboringNodesX.at(indices.at(0)) ;

@@ -1,5 +1,4 @@
 
-#include <stdio.h>
 #include "Cell.hpp"
 
 #define index 7
