@@ -996,8 +996,8 @@ void Tissue::Refine_CurvedInterface ()
                 distToCntrX.resize(tmpX.size() ) ;
                 vector<double > distToCntrY ;
                 distToCntrY.resize(tmpY.size() ) ;
-                transform(tmpX.begin(), tmpX.end(), cntx.begin(), distToCntrX.begin(), minus<>()) ;
-                transform(tmpY.begin(), tmpY.end(), cnty.begin(), distToCntrY.begin(), minus<double>()) ;
+                transform(tmpX.begin(), tmpX.end(), cntx.begin(), distToCntrX.begin(), linearConfig(1 ,-1) ) ;
+                transform(tmpY.begin(), tmpY.end(), cnty.begin(), distToCntrY.begin(), linearConfig(1 ,-1) ) ;
                 vector<double> tetta ;
                 vector<double> tmpMag ;
                 
@@ -1418,12 +1418,12 @@ void Tissue::FullModel_Diffusion()
                 vector<double> deltaU ;
                 deltaU.resize(cells.at(i).meshes.at(j).concentrations.size() ) ;
                transform( cells.at(cellID).meshes.at(meshID ).concentrations.begin()+1, cells.at(cellID).meshes.at(meshID ).concentrations.begin()+5,
-                          cells.at(i).meshes.at(j).concentrations.begin()+1, deltaU.begin()+1, minus<>() );
+                          cells.at(i).meshes.at(j).concentrations.begin()+1, deltaU.begin()+1, linearConfig(1 ,-1) );
                 vector<double> flux ;
                 flux.clear() ;
                 flux.resize(deltaU.size() ) ;
               transform(deltaU.begin()+1, deltaU.begin()+5, flux.begin()+1, productNum(area/length ) ) ;
-                transform(flux.begin()+1, flux.begin()+5, cells.at(i).meshes.at(j).diffusions.begin()+1, flux.begin()+1 , multiplies<>() ) ;
+                transform(flux.begin()+1, flux.begin()+5, cells.at(i).meshes.at(j).diffusions.begin()+1, flux.begin()+1 , productVec()  ) ;
                 cells.at(i).meshes.at(j).Flux.push_back(flux) ;
                 transform(flux.begin()+1, flux.begin()+5, flux.begin()+1, productNum(-1) ) ;
                 cells.at(cellID).meshes.at(meshID).Flux.push_back( flux ) ;

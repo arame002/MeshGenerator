@@ -415,11 +415,11 @@ void Cell::FullModel_SelfDiffusion ()
         vector<double> deltaU ;
         deltaU.resize(meshes.at(i).concentrations.size() ) ;
         transform( meshes.at((i+1)% size ).concentrations.begin(), meshes.at((i+1)% size ).concentrations.end(),
-                  meshes.at(i).concentrations.begin(), deltaU.begin(), minus<>() );
+                  meshes.at(i).concentrations.begin(), deltaU.begin(), linearConfig(1 ,-1) );
         vector<double> flux ;
         flux.resize(deltaU.size() ) ;
         transform(deltaU.begin(), deltaU.end(), flux.begin(), productNum(area/length ) ) ;
-        transform(flux.begin(), flux.end(), meshes.at(i).diffusions.begin(), flux.begin(),multiplies<>() ) ;
+        transform(flux.begin(), flux.end(), meshes.at(i).diffusions.begin(), flux.begin(), productVec() ) ;
         meshes.at(i).Flux.push_back(flux) ;
         transform(flux.begin(), flux.end(), flux.begin(), productNum(-1) ) ;
         meshes.at((i+1) % size).Flux.push_back( flux ) ;

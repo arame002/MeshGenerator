@@ -72,7 +72,7 @@ void Mesh::FullModel_Euler()
     transform(concentrations2.begin(), concentrations2.end(),degradationChanges.begin() ,concentrations2.begin(), linearConfig( 1,-dt )  ) ;
     //rate changes ( dt is included )
     transform(concentrations2.begin()+1 , concentrations2.end(), rateChanges.begin()+1 ,
-              concentrations2.begin()+1 , minus<> () ) ;
+              concentrations2.begin()+1 , linearConfig(1 , -1 ) ) ;
     concentrations2.at(1) += rateChanges.at(0) + rateChanges.at(2) ;
     concentrations2.at(2) += rateChanges.at(1) ;
     concentrations2.at(4) += rateChanges.at(6) ;
@@ -97,7 +97,7 @@ vector<double> Mesh::UpdateDegradation()
     degradations.at(2) = degradations.at(0) / (1 + pow(concentrations.at(2)/kcw,powers.at(3) ) ) ;
     vector<double> tmp ;
     tmp.resize(degradations.size() ) ;
-    transform(concentrations.begin(), concentrations.end(), degradations.begin(), tmp.begin(), multiplies<> () ) ;
+    transform(concentrations.begin(), concentrations.end(), degradations.begin(), tmp.begin(), productVec() ) ;
     return tmp ;
 
 }
@@ -108,7 +108,7 @@ vector<double> Mesh:: UpdateRates()
     // <r_c, r_im, r_ex, 0 , k_on , k_on, k_off>
     vector<double> tmp ;
     tmp.resize(concentrations.size()) ;
-    transform(concentrations.begin(), concentrations.end(),rates.begin() , tmp.begin(), multiplies<>() ) ;
+    transform(concentrations.begin(), concentrations.end(),rates.begin() , tmp.begin(), productVec() ) ;
     transform(tmp.begin(), tmp.end(), tmp.begin(), productNum( dt) ) ;
     tmp.at(2) *= 1/(1 + pow(concentrations.at(3)/kcw, powers.at(2) ) ) ;
     tmp.at(2) *= 1/(1 + pow(concentrations.at(6)/kCK, powers.at(1) ) ) ;

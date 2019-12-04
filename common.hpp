@@ -83,4 +83,17 @@ public:
     }
 } ;
 
+class productVec
+{
+private:
+    
+public:
+    // This operator overloading enables calling
+    // operator function () on objects of increment
+    double operator () (double arr_num1 , double arr_num2) const
+    {
+        return  arr_num1 * arr_num2 ;
+    }
+} ;
+
 
