@@ -6,10 +6,10 @@ MESSAGE("CMAKE_CXX_COMPILER_VERSION: " ${CMAKE_CXX_COMPILER_VERSION})
 
 
 add_library(extras_lib STATIC
-	Mesh.cpp
-	Cell.cpp
-	Tissue.cpp
-	common.cpp)
+	SignalMesh.cpp
+	SignalCell.cpp
+	SignalTissue.cpp
+	SignalCommon.cpp)
 
 	
 target_compile_features(extras_lib PUBLIC cxx_std_11)
