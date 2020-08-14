@@ -14,7 +14,7 @@ add_library(extras_lib STATIC
 	
 target_compile_features(extras_lib PUBLIC cxx_std_11)
 
-set(MAIN_SOURCES main.cpp)
+set(MAIN_SOURCES Signal_Calculator.cpp)
 set(TARGET program)
 add_executable(${TARGET} ${MAIN_SOURCES})
 
