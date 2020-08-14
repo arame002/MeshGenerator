@@ -1885,11 +1885,11 @@ void SignalTissue::WriteSignalingProfile()
     
     ofstream profile (cellTypeString + number + "D" + dif + "d" + deg + "p" + pro + "dt"+ timeStep + ".txt") ;
     
-    for (int i=0 ; i< tissueLevelConcentration.size() ; i++)
+    for (unsigned int i=0 ; i< tissueLevelConcentration.size() ; i++)
     {
         profile << abs( cells.at(i).centroid.at(0)- tissueCenter.at(0) ) << '\t'
                 << abs( cells.at(i).centroid.at(0)- tissueCenter.at(0) )/ TissueRadius ;
-        for (int j = 0; j< tissueLevelConcentration.at(i).size() ; j++)
+        for (unsigned int j = 0; j< tissueLevelConcentration.at(i).size() ; j++)
         {
             profile << '\t' << tissueLevelConcentration.at(i).at(j) ;
         }
