@@ -1,13 +1,5 @@
-#include "Mesh.hpp"
+#include "SignalMesh.hpp"
 using namespace std ;
-#define thres_lateral 0.5 // 2.4 for plant cells and 0.5 for wing disc
-#define searchAreaForNghbr 10.0 * thres_lateral
-#define thres_corners 1.0 *thres_lateral    //to find a vertices for cells who does not have a comon neighbor
-#define thres_cyclic4  0.5 * thres_lateral
-#define thres_intersect 1.1 *thres_lateral
-#define thres_noBoundary 20
-#define thres_Production 40
-#define thres_layer 3             //CLV3 layer 3+
 
 
 class CommonNeighbor
@@ -46,10 +38,10 @@ public:
 };
 
 
-class Cell
+class SignalCell
 {   public:
-    Cell() ;
-    vector<Mesh> meshes ;
+    SignalCell() ;
+    vector<SignalMesh> meshes ;
     vector <Neighbor> neighbors ;
     int cellID ;
     int layer ;
@@ -69,13 +61,18 @@ class Cell
     vector<int> cyclic4 ;
     
     double productionW ;
-    double productionCk ;
     double productionC ;
+    double productionCk ;
+    double productionCkR ;
+    double productionPMad ;
     
     vector <double> centroid ;
     vector<double> cntrToCntr ;
     vector <int > nghbrCandidate ;
     vector<vector<vector<double> > > nodeDistoNghbrsCandidate ;
+    vector<double> cellConcentration ;
+    double cellU ;
+    double areaCell ;
     
     void Cal_Centroid() ;
     vector <vector <double> > Cal_NodeToNodeDist (vector<double> , vector<double>) ;
@@ -95,8 +92,12 @@ class Cell
     void Self_Diffusion () ;
     void Refine_NoBoundary () ;
     void Refine_NodeXNew () ;
-    void FullModel_SelfDiffusion () ;
+    void FullModel_SelfDiffusion (bool type) ;
     void FullModel_ProductionCell () ;
+    void CellLevelConcentration (bool type) ;
+    void CellLevelConcentration2(bool type) ;
+    
+    void FullModel_WingDisc_SelfDiffusion () ;
     
     
     
