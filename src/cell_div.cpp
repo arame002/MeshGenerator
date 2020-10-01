@@ -772,12 +772,15 @@ shared_ptr<Cell> Cell::division() {
 	sister->update_Wall_Angles();
 	this->update_Cell_Center();
 	sister->update_Cell_Center();
+	/*
 	Coord L1_AVG = this->get_Tissue()->Compute_L1_AVG();
 	double acd = this->get_Tissue()->get_Avg_Cell_Diameter();
 	this->calc_WUS(L1_AVG, 2 * acd);
 	sister->calc_WUS(L1_AVG, 2 * acd);
 	this->calc_CK(L1_AVG, 3 * acd);
 	sister->calc_CK(L1_AVG, 3 * acd);
+	*/
+	sister->set_Signal_Vec(this->get_Signal_Vec());
 
 	//Set sister growth rate at random
 	/*

@@ -300,6 +300,10 @@ void Cell::set_Damping(double new_damping) {
 	this->damping = new_damping;
 	return;
 }
+void Cell::set_Signal_Vec(vector<double> new_signal) { 
+	this->signal_vec = new_signal;
+	return;
+}
 //Life length is the number of time steps this cell has lived 
 //in order to be at its current cell progress (Not actually the time since
 //creation, since changing this changes growth rate.

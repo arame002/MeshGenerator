@@ -189,20 +189,17 @@ int main(int argc, char* argv[]) {
 
 	int Ti = 0;
 	int terminal_timer = 0;
-	bool is_terminal = false;
+	bool is_terminal = true;
 
 
 	//Delta t is approximately 0.4s
 	//int terminal_timeout = 182000; //Plant stops at 20.2 hours after all cells divide
-	int terminal_timeout = 12500; // Plant stops at 1.5 hours after all cells divide
+	int terminal_timeout = 362500; // Plant stops after 40 hours simulated growth
 	while (terminal_timer < terminal_timeout) {
 		//keep track of simulation runs
 		if (!is_terminal) {
 			if (Ti%1000 == 0) {
 				is_terminal = growing_Tissue.terminal_Tissue();
-				if (is_terminal) { 
-					terminal_timeout = 2*Ti;
-				}
 			}
 		} else { 
 			terminal_timer++;
@@ -227,7 +224,7 @@ int main(int argc, char* argv[]) {
 			*/
 		if(Ti % 5000 == 0) {
 			//cout << "update signal" << endl;
-			growing_Tissue.update_Signal_Dynamic();
+			growing_Tissue.update_Signal_Dynamic(Ti);
 			//growing_Tissue.update_growth_direction();
 		}
 		//adds one new cell wall node per cell everytime it is called

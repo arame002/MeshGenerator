@@ -43,6 +43,10 @@ class Cell: public enable_shared_from_this<Cell> {
 		Coord cell_center;
 		double cytokinin;
 		double wuschel;
+		vector<double> signal_vec;
+		//Signals contains...
+		//(WUS_MRNA,WUS_Cyt,WUS_Nucleus,CLV3,
+		//CK_Receptor,Bound_CK_Receptor)
 		int growth_rate;
 		double init_Num_Nodes;
 		double perimeter;
@@ -97,6 +101,9 @@ class Cell: public enable_shared_from_this<Cell> {
 		void add_Wall_Node_Vec(shared_ptr<Wall_Node> curr);
 		//get cyt nodes
 		void get_Cyt_Nodes_Vec(vector<shared_ptr<Cyt_Node>>& cyts);
+		//
+		vector<double> get_Signal_Vec(){return signal_vec;}
+		void set_Signal_Vec(vector<double> new_signal);
 		//add new cyt node
 		void update_cyt_node_vec(shared_ptr<Cyt_Node> new_node);
 		//reset cell_Progress

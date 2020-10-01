@@ -363,7 +363,17 @@ double Tissue::get_normal_number(double mean, double sigma) {
 	return gr;
 }
 void Tissue::update_Signal(bool initial_update){
+
+
+	if (initial_update) { 
+		vector<double> init_signal;
+		init_signal.resize(7,0);
+		for (unsigned int i = 0; i < cells.size(); i++) { 
+			cells.at(i)->set_Signal_Vec(init_signal);
+		}
+	}
 	
+	/*
 	Coord L1_AVG = this->Compute_L1_AVG();
 	update_Avg_Cell_Diameter();
 	for(int i = 0; i < num_cells; i++){
@@ -376,7 +386,7 @@ void Tissue::update_Signal(bool initial_update){
 		//cout << "GROWTH RATE" << endl;
 		cells.at(i)->set_growth_rate(initial_update);
 		//cout<< "growth rate: " << i << " " << cells.at(i)->get_growth_rate() << endl;
-	}
+	}*/
 	return;
 
 }
@@ -396,12 +406,16 @@ void Tissue::update_Avg_Cell_Diameter() {
 	this->avg_cell_diam = acd / static_cast<double>(count);
 }
 
-void Tissue::update_Signal_Dynamic(){
+void Tissue::update_Signal_Dynamic(int Ti) {
 	for(int i = 0; i < num_cells; i++) {
 		cells.at(i)->update_Cell_Center();
 		//Is this necessary?
 	}
 	vector<vector<double>> signals;
+	vector<vector<double>> new_signals;
+	for (unsigned int i = 0; i < cells.size(); i++) { 
+		signals.push_back(cells.at(i)->get_Signal_Vec());
+	}
 	vector<vector<double>> locX;
 	vector<vector<double>> locY;
 	vector<double> cntX;
@@ -412,14 +426,19 @@ void Tissue::update_Signal_Dynamic(){
 		cntX.push_back(cells.at(i)->get_Cell_Center().get_X());
 		cntY.push_back(cells.at(i)->get_Cell_Center().get_Y());
 	}
-	signals = Signal_Calculator(locX,locY,cntX,cntY); 
-	double new_wus,new_ck;
+	new_signals = Signal_Calculator(locX,locY,cntX,cntY, signals,
+			static_cast<double>(Ti)); 
 	for(int i = 0; i < num_cells; i++){
+		cells.at(i)->set_Signal_Vec(
+				new_signals.at(i)
+				);
+		/*
 		new_wus = signals.at(0).at(i);
 		new_ck = signals.at(1).at(i);
 		cells.at(i)->set_WUS(new_wus);
 		cells.at(i)->set_CK(new_ck);
 		cells.at(i)->set_growth_rate(false);
+		*/
 	}
 	return;
 
