@@ -13,8 +13,8 @@ SignalMesh::SignalMesh()
     degradations.resize(8) ;
     productions.resize(8) ;
     rates.resize(8) ;
-    D = 2.0 ;
-    d = 0.18 ;
+    D = 20.0 ;
+    d = 1.8 ;
     diffusions = {0,D,0,D,D,0,0,0} ;
     selfDiffusions = {0,D,0,D,D,0,0,0} ;
     degradations = {d, d, d, d, d, d, 2.0*d , d } ;
@@ -86,7 +86,7 @@ void SignalMesh::FullModel_Euler(bool type, double radius, vector<double> tissue
     vector<double> totalFlux ;
     totalFlux.clear() ;
     
-    for (int j= 0 ; j< diffusions.size() ; j++ )
+    for (unsigned int j= 0 ; j< diffusions.size() ; j++ )
     {
        totalFlux.push_back( sum_over_vec(Flux, j) ) ;
         
