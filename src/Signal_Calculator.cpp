@@ -146,8 +146,8 @@ int main ()
      tissue.WriteSignalingProfile() ;
      
      // return tissue.tissueLevelU ;
-   //return tissue.tissueLevelConcentration ;
-     return 0 ;
+   return tissue.tissueLevelConcentration ;
+    // return 0 ;
 }
 
 // Adjust index and other global variables
