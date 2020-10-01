@@ -4,7 +4,7 @@
 #include <chrono>
 
 //---------------------------------------------------------------------------------------------
-
+/*
 vector<vector<double> > Signal_Calculator(vector< vector<double> > locX , vector< vector<double> > locY , vector<double > centX , vector<double > centY ,vector< vector<double> > oldConcentrations ,double index)
 {
     
@@ -24,16 +24,16 @@ int main ()
      //int index = 40 * tmpIndex ;
      int index = 100 ;
      vector<vector<double> > oldConcentrations ;
- 
- //vector< vector<double> > Signal_Calculator ( vector< vector<double> > locX , vector< vector<double> > locY , vector<double > centX , vector<double > centY,vector< vector<double> > oldConcentrations , double index ){
+ */
+ vector< vector<double> > Signal_Calculator ( vector< vector<double> > locX , vector< vector<double> > locY , vector<double > centX , vector<double > centY,vector< vector<double> > oldConcentrations , double index ){
     
     ofstream nanIndex ("NanIndex.txt", ofstream::app) ;    //everything will be written at the end of the existing file
     ofstream sgnlCalculator ("sgnlCalculator.txt", ofstream::app) ;    //everything will be written at the end of the existing file
     auto start = std::chrono::high_resolution_clock::now() ;
     SignalTissue tissue ;
-    tissue.cellType = wingDisc ;
+    tissue.cellType = plant ;
     tissue.equationsType = fullModel ;
-    tissue.readFileStatus = true ;
+    tissue.readFileStatus = false ;
     tissue.frameIndex = static_cast<int>(round ( 100 * index) ) / 100 ;
     tissue.writeVtk = ! fmod(static_cast<int>(round ( 100 * index) ), 100) ;
     cout<<"current index in Signal_Calculator function is "<<index<<endl ;
@@ -125,7 +125,7 @@ int main ()
     }
     
      tissue.Cal_AllCellConcentration() ;     // output depends on the cellType and equationType
-     tissue.AddNoiseToChemical() ;
+     //tissue.AddNoiseToChemical() ;
      
      
    //  tissue.Cal_ReturnSignal() ;             // returning Dpp level as U
