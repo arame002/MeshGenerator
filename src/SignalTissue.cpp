@@ -114,7 +114,7 @@ vector<SignalCell> SignalTissue::ReadFile ( )
     double d ;
     vector<SignalCell> tmpCell ;
     string number = to_string(frameIndex) ;
-    ifstream nodeData ("Locations_"+ number +".txt") ;
+    ifstream nodeData ("./src/Locations_"+ number +".txt") ;
     if (nodeData.is_open())
     {
         cout << "file is open"<<endl ;
@@ -159,7 +159,7 @@ vector<SignalCell> SignalTissue::ReadFile2 ( )
     double e,f ;
     vector<SignalCell> tmpCell ;
     string number = to_string(frameIndex) ;
-    ifstream nodeData ("Locations_"+ number +".txt") ;
+    ifstream nodeData ("./src/Locations_"+ number +".txt") ;
     if (nodeData.is_open())
     {
         cout << "file is open"<<endl ;
@@ -197,7 +197,7 @@ vector<SignalCell> SignalTissue::ReadFile3 ( )
     double c,d ;
     vector<SignalCell> tmpCell ;
     string number = to_string(frameIndex) ;
-    ifstream nodeData ("ExportCellProp_"+ number +".txt") ;
+    ifstream nodeData ("./src/ExportCellProp_"+ number +".txt") ;
     if (nodeData.is_open())
     {
      //   cout << "file is open"<<endl ;
