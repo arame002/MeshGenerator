@@ -23,15 +23,30 @@ public:
     vector<vector<double> > tissueLevelConcentration ;
     double areaTissue ;
     double TissueRadius ;
+    double tissueHeight ;
+    double tissueWidth ;
     vector<double> tissueCenter ;
     int frameIndex ;
     bool writeVtk ;
     bool frameIsNan = false ;
+    double dppProd = 1.0 ;
+    int eulerIterator = 0 ;
+    int eulerMaxIterator = 800000 ;
+    double diffusion = 20.0 ;
+    double degradation = 0.4 ;
+    double timeStep = 0.01 ;
+    double sourceSize = 0.12 ;
+    string folderName = "./" ;
+    double klr = 1.0 ;
+    double kp2 = 0.1 ;
+    int meshDivider =1 ;
+    
     
     
     
     void Cal_AllCellCenters () ;
     void Cal_TissueCenter () ;
+    void Cal_TissueCenter2 () ;
     void Cal_AllCellCntrToCntr () ;
     void Find_AllCellNeighborCandidates () ;
     void Find_AllCellNeighbors () ;
@@ -62,6 +77,8 @@ public:
     void AllCell_RefineNoBoundary () ;
     void Refine_CurvedInterface () ;
     void Print_VeritcesSize () ;
+    void Cal_TissueDimensions () ;
+    void AllCell_ReduceMeshSize(int n) ;
     
  
     void Find_AllMeshes () ;
@@ -85,6 +102,12 @@ public:
     void ReadConcentrations () ;
     void UpdateNanStatus () ;
     void WriteSignalingProfile () ;
+    void AddNoiseToChemical () ;
+    void AllCell_AbsorbingBoundaryCondition () ;
+    void CorrectionToConcentrations () ;
+    void AssignVariables () ;
+    void Write_AllMeshesInfo () ;
+    
     
  
 };

@@ -13,17 +13,17 @@ SignalMesh::SignalMesh()
     degradations.resize(8) ;
     productions.resize(8) ;
     rates.resize(8) ;
-    D = 2.0 ;
-    d = 0.18 ;
-    diffusions = {0,D,0,D,D,0,0,0} ;
+    D = 20.0 ;
+    d = 0.1 ;
+    diffusions =     {0,D,0,D,D,0,0,0} ;
     selfDiffusions = {0,D,0,D,D,0,0,0} ;
-    degradations = {d, d, d, d, d, d, 2.0*d , d } ;
+    degradations = {d, d, d, d, d, d, 2.0*d , d } ;     //test degradation of complex is not 2d anymore
     concentrations = {0,0,0,0,0,0,0,0} ;
     concentrations2 = {0,0,0,0,0,0,0,0} ;
   //  productions = {1,0,0,1,1,1,0,1} ;
-    rates = {1,1,1,0,0.003,0.003,1,0} ; // <r_c, r_im, r_ex, 0 , k_on , k_on, k_off>
+    rates = {1,1,1,0.0    ,0.0 ,0.0    ,0.000,0} ; // <r_c, r_im, r_ex, 0 , k_on , k_on, k_off,0>
     powers.resize(4) ;
-    powers = {-2,1,2,1} ;
+    powers = {-2,1,8,1} ;
     dt = 0.01/ D ;
     
     
@@ -79,20 +79,23 @@ void SignalMesh::UpdateU()
 void SignalMesh::FullModel_Euler(bool type, double radius, vector<double> tissueCntr)
 {
     
-    vector<double> degradationChanges = UpdateDegradation(type, radius,tissueCntr ) ;
-    vector<double> rateChanges = UpdateRates(type) ;
+    vector<double> degradationChanges ;
+    vector<double> rateChanges ;
+    degradationChanges = UpdateDegradation(type, radius,tissueCntr ) ;
+    rateChanges = UpdateRates(type) ;
     
     
     vector<double> totalFlux ;
     totalFlux.clear() ;
     
-    for (int j= 0 ; j< diffusions.size() ; j++ )
+    for (unsigned int j= 0 ; j< diffusions.size() ; j++ )
     {
        totalFlux.push_back( sum_over_vec(Flux, j) ) ;
         
     }
     if (type == false)  //plant
     {
+        rateChanges = UpdateRates(type) ;
     
         // Diffusion changes from 1st to 4th
         transform(concentrations.begin()+1, concentrations.begin()+5, totalFlux.begin()+1, concentrations2.begin()+1, linearConfig (1.0, dt ) ) ;
@@ -114,31 +117,38 @@ void SignalMesh::FullModel_Euler(bool type, double radius, vector<double> tissue
     }
     else    // WingDisc
     {
+        
         // Diffusion changes only 4th
         transform(concentrations.begin()+4, concentrations.begin()+5, totalFlux.begin()+4, concentrations2.begin()+4, linearConfig (1.0, dt ) ) ;
         // degradation changes (from 4th to the end(7th)
         transform(concentrations2.begin()+4, concentrations2.end(),degradationChanges.begin()+4 ,concentrations2.begin()+4, linearConfig( 1.0,-dt )  ) ;
-        //rate changes
-        /*  test
+        //rate changes simplified model
+           rateChanges = UpdateRates(type) ;
         transform(concentrations2.begin()+4 , concentrations2.end()-1, rateChanges.begin()+4 , concentrations2.begin()+4 , linearConfig(1.0 , - dt ) ) ;
         concentrations2.at(4) += rateChanges.at(6) * dt ;
         concentrations2.at(5) += rateChanges.at(6) * dt ;
         concentrations2.at(6) += rateChanges.at(4) * dt ;
-        */
+            //end of simplified
         //production changes
         vector<double> tmpProduction = productions ;
         double rs = 0.12 ;
         int ns = 40 ;
         double cntX = tissueCntr.at(0) ;
         double cntY = tissueCntr.at(1) ;
-        tmpProduction.at(4) *= 1/(1+ pow(abs(triangleX.at(0)-cntX )/(rs * radius), ns ) ) ;        //check power
-        tmpProduction.at(5) *= (cMax-cMin)/(1+ pow(concentrations.at(7)/kP,powers.at(2) ) ) ;        //check power
-        tmpProduction.at(5) += cMin * productions.at(5) ;
-        tmpProduction.at(5) *= 1/(1+ pow(abs(triangleX.at(0)-cntX )/(rs * radius) , -ns ) ) ;        //check power
-        tmpProduction.at(5) += (3.0/6.0) * productions.at(5) ;
-        tmpProduction.at(7) *= 1/(1+ pow(concentrations.at(6)/kLR , powers.at(0) ) ) ;        //check power
-        transform(concentrations2.begin()+4 , concentrations2.end(), tmpProduction.begin()+4, concentrations2.begin()+4, linearConfig(1.0 , dt ) ) ;
+        //Analyze this for full-model
+        tmpProduction.at(4) *= 1/(1.0+ pow(abs(triangleX.at(0)-cntX )/(rs * radius), ns ) ) ;
         
+        tmpProduction.at(5) *= (cMax-cMin) ;
+        tmpProduction.at(5) *= 1.0/(1.0+ pow(concentrations.at(7)/KP2,powers.at(2) ) ) ;
+        tmpProduction.at(5) += cMin * productions.at(5) ;
+         
+       // tmpProduction.at(5) *= 1.0/(1.0+ pow(abs(triangleX.at(0)-cntX )/(rs * radius) , -ns ) ) ;
+       // tmpProduction.at(5) += (3.0/6.0) * productions.at(5) ;
+        
+        tmpProduction.at(7) *= 1.0/(1.0+ pow(concentrations.at(6)/kLR , powers.at(0) ) ) ;
+         
+        transform(concentrations2.begin()+4 , concentrations2.end(), tmpProduction.begin()+4, concentrations2.begin()+4, linearConfig(1.0 , dt ) ) ;
+
     }
     
     
@@ -147,7 +157,7 @@ void SignalMesh::FullModel_Euler(bool type, double radius, vector<double> tissue
 vector<double> SignalMesh::UpdateDegradation(bool type , double radius, vector<double> tissueCntr)
 {
     int ns=40 ;
-    double rs = 0.12 ;
+    double rs = 0.10 ;
     double cntX = tissueCntr.at(0) ;
     vector<double> tmp ;
     tmp.resize(degradations.size() ) ;
@@ -165,8 +175,13 @@ vector<double> SignalMesh::UpdateDegradation(bool type , double radius, vector<d
     {
         tmp = degradations ;
         transform(concentrations.begin()+4, concentrations.end() , degradations.begin()+4, tmp.begin()+4, productVec() ) ;
-        //test
-     //   tmp.at(4) *= 1 / (1+pow(abs(triangleX.at(0)- cntX )/(rs * radius) , ns) ) ;
+          //  test simplified model
+        double numberOneBullShitGuy = (1.0 +pow(abs(triangleX.at(0)- cntX )/(rs * radius) , ns) ) ;
+       // cout<< (triangleX.at(0)- cntX )/(rs * radius)<<'\t'<<tmp.at(4)<<'\t'<< numberOneBullShitGuy << '\t'<< tmp.at(4)*1.0 / (1.0 +pow(abs(triangleX.at(0)- cntX )/(rs * radius) , ns) )<<endl;
+        //cout<< (triangleX.at(0))<<'\t'<< cntX <<'\t'<< abs(triangleX.at(0)- cntX ) << '\t'<< abs(triangleX.at(0)- cntX )/(rs * radius)<<endl;
+        
+        // tmp.at(4) *= 1.0 / (1.0 +pow(abs(triangleX.at(0)- cntX )/(rs * radius) , ns) ) ;
+          //  end of simplified model
     }
     return tmp ;
 
@@ -216,4 +231,28 @@ double SignalMesh::UpdateCp ()
 }
 
 //---------------------------------------------------------------------------------------------
+
+void SignalMesh::Mesh_ABC(bool type)
+{
+    if (type == false )             //cellType == plant
+    {
+        
+    }
+    else
+    {
+        if (connection.first == -1)
+        {
+            concentrations2.at(4) = 0.0 ;
+        }
+    }
+}
+
+void SignalMesh::UpdateParameters()
+{
+    //test
+    diffusions = {0,D,0,D,D,0,0,0} ;
+    selfDiffusions = {0,D,0,D,D,0,0,0} ;
+    degradations = {d, d, d, d, d, d, d , d } ;
+    
+}
 
