@@ -440,6 +440,7 @@ void SignalCell::FullModel_SelfDiffusion (bool type)
             int size = static_cast<int>(meshes.size()) ;
             double tmpChannel = meshes.at(i).channel.at(0) ;
             double length = meshes.at(i).length.at(0) ;
+            //tmpChannel = 1.0 ;
             vector<double> deltaU ;
             deltaU.resize(meshes.at(i).concentrations.size() ) ;
             transform( meshes.at((i+1)% size ).concentrations.begin()+4, meshes.at((i+1)% size ).concentrations.begin()+5,
@@ -451,6 +452,9 @@ void SignalCell::FullModel_SelfDiffusion (bool type)
             meshes.at(i).Flux.push_back(flux) ;
             transform(flux.begin()+4, flux.begin()+5, flux.begin()+4, productNum(-1.0) ) ;
             meshes.at((i+1) % size).Flux.push_back( flux ) ;
+            if (abs(meshes.at(i).concentrations.at(4) ) < abs(flux.at(4))* meshes.at(i).dt && flux.at(4) > 0.0)
+            cout<<cellID <<'\t'<<i<<'\t'<< tmpChannel<<'\t'<<length<<'\t'<<tmpChannel/( length * length )<<'\t'<<deltaU.at(4)<<'\t'
+            << flux.at(4)* 0.01/meshes.at(i).selfDiffusions.at(4)<<'\t'<<meshes.at(i).concentrations.at(4)<<endl ;
         }
     }
 }
@@ -524,3 +528,54 @@ void SignalCell:: CellLevelConcentration2(bool type)
     }
     transform(cellConcentration.begin(), cellConcentration.end(), cellConcentration.begin(), productNum(1.0/meshes.size() ) ) ;
 }
+//---------------------------------------------------------------------------------------------
+void SignalCell::Cell_ABC(bool type, double TRadius, double tCentX)
+{
+    boundary = false ;
+    for (int i = 0; i< meshes.size(); i++)
+    {
+        meshes.at(i).Mesh_ABC(type) ;
+       /*
+        if (meshes.at(i).connection.first == -1 && ( abs(centroid.at(0)- tCentX )/TRadius > 0.12 ) )
+        {
+            boundary = true ;
+            break ;
+        }
+    }
+    if (boundary == true)
+    {
+        for (int i=0; i< meshes.size(); i++)
+        {
+            meshes.at(i).concentrations2.at(4) = 0.0 ;
+        }
+        */
+    }
+}
+
+void SignalCell::Reduce_MeshSize(int n)
+{
+    int verticesSize = verticesX.size() ;
+    for (int i=0 ; i< verticesSize; i++)
+    {
+        for (int j = 1 ; j < n; j++)
+        {
+            double x1 = verticesX.at(i) ;
+            double x2 = verticesX.at((i+1)% verticesSize ) ;
+            double y1 = verticesY.at(i) ;
+            double y2 = verticesY.at((i+1)% verticesSize ) ;
+            
+            double newX = x1 + j * (x2 - x1)/ n ;
+            double newY = y1 + j * (y2 - y1)/ n ;
+            if (Dist2D(x1, y1, x2, y2) > 0.0  )
+            {
+            verticesX.push_back(newX) ;
+            verticesY.push_back(newY) ;
+            }
+        
+            
+        }
+    }
+    
+    SortCCW();
+}
+

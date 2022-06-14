@@ -86,6 +86,7 @@ class SignalCell
     void Add_BoundaryVertice () ;
     void Add_BoundaryVertice2 () ;
     void Add_BoundaryVertice3 () ;
+    void Reduce_MeshSize(int n) ;
     
     
     void Find_Mesh () ;
@@ -96,8 +97,7 @@ class SignalCell
     void FullModel_ProductionCell () ;
     void CellLevelConcentration (bool type) ;
     void CellLevelConcentration2(bool type) ;
-    
-    void FullModel_WingDisc_SelfDiffusion () ;
+    void Cell_ABC (bool type, double TRadius, double tCentX)  ;      // absorbing boundary condition
     
     
     
